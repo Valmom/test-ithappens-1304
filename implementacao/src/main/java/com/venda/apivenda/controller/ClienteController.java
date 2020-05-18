@@ -5,12 +5,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.venda.apivenda.model.Cliente;
 import com.venda.apivenda.model.Usuario;
@@ -44,7 +46,7 @@ public class ClienteController {
 	}
 	
 	@RequestMapping(value = "/cadastrarCliente", method = RequestMethod.POST)
-	public ModelAndView form(Cliente cliente) {
+	public ModelAndView form(Cliente cliente, BindingResult result, RedirectAttributes atributtes) {
 		clienteRepository.save(cliente);
 		
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -58,6 +60,7 @@ public class ClienteController {
 		ModelAndView model = new ModelAndView("redirect:/cadastrarCliente");
 		
 		model.addObject("usuario", usuario);
+		atributtes.addFlashAttribute("mensagem", "CLiente cadastrado com sucesso.");
 		
 		return model;
 

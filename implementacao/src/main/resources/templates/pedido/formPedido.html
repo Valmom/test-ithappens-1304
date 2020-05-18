@@ -35,7 +35,7 @@
 							class="nav-link"> <i class="nav-icon fas fa-building"></i>
 								<p>Filial</p>
 						</a></li>
-						<li class="nav-item"><a href="/cadastrarPedido"
+						<li class="nav-item"><a href="/retornaClientes"
 							class="nav-link"> <i class="nav-icon fas fa-cash-register"></i>
 								<p>Pedido</p>
 						</a></li>
@@ -52,6 +52,7 @@
 			<form method="post" th:object="${cliente}">
 				<input type="hidden" th:value="${usuario.filial.id}" name="filial_id">
 				<input type="hidden" th:value="${usuario.id}" name="usuario_id">
+				<input type="hidden" th:value="${cliente.id}" name="cliente_id">
 				<div class="content">
 					<div class="container-fluid">
 						<div class="row">
@@ -60,8 +61,7 @@
 									<div class="card-header">
 										<div class="card-title" style="margin-top: 5px">
 											<div class="title">PEDIDO - <span th:text="${cliente.nome}" style="text-transform: uppercase"></span></div>
-										</div>
-										
+										</div>										
 										<div class="pull-right">
 											<div class="btn-group">
 												<button type="submit"
@@ -74,7 +74,31 @@
 									</div>
 									<div class="card-body">
 										<div class="row">
+											<div class="input-group col-md-12">
+												<input type="text" class="form-control" placeholder="PRODUTO" id="txtCodigo">
+												<div class="input-group-append">
+												  <span class="input-group-text"><a href="#" id="href"><i class="fas fa-check"></i></a></span>
+												</div>												
+											</div>
+										</div>
+										<div class="row">
 											<table class="table table-striped">
+												<thead>
+													<tr>
+														<th>DESCRIÇÃO</th>
+														<th>CÓDIGO</th>
+														<th>QTDE</th>
+														<th>VALOR</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr th:each="produto : ${produtos}">
+														<td><span th:text="${produto.descricao}"></span></td>
+														<td><span th:text="${produto.codigo}"></span></td>
+														<td><span th:text="${produto.quantidade}"></span></td>
+														<td><span th:text="${produto.valor}"></span></td>
+													</tr>
+												</tbody>
 											</table>
 										</div>
 									</div>
@@ -95,5 +119,19 @@
 	<script src="../plugins/jquery/jquery.min.js"></script>
 	<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="../dist/js/adminlte.min.js"></script>
+	<script th:inline="javascript">
+		$(function() {
+			$("#href").click(function() {
+				if ($('#txtCodigo').val() === "")
+					alert("Informe o código do produto.");
+				else {
+				    var idCliente = $('input[name=cliente_id]').val();
+				    var codigo = $('#txtCodigo').val();
+				    var myUrl = '/' + idCliente + '/' + codigo; 
+				    window.location.href = myUrl;
+				}
+			});
+		});
+	</script>	
 </body>
 </html>

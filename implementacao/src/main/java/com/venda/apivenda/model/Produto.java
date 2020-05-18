@@ -21,7 +21,7 @@ public class Produto {
 	
 	@ManyToOne
 	private Filial filial;
-	
+
 	public Long getId() {
 		return id;
 	}
